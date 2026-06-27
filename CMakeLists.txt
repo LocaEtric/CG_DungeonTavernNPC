@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.21)
 
-project(SkeletonToChange LANGUAGES CXX)
+project(DungeonTavernNPC LANGUAGES CXX)
 
 # --------------------
 # Project layout
@@ -50,6 +50,27 @@ FetchContent_Declare(
 )
 set(GLM_ENABLE_CXX_20 ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(glm)
+
+# nlohmann/json is required by tiny_gltf.h and Scene.hpp.
+# The course skeleton includes it as <json.hpp>, so keep the existing include
+# style and place the downloaded single header in the build directory.
+set(JSON_INCLUDE_DIR "${CMAKE_CURRENT_BINARY_DIR}/_deps/nlohmann_json_single")
+set(JSON_HEADER "${JSON_INCLUDE_DIR}/json.hpp")
+if(NOT EXISTS "${JSON_HEADER}")
+  file(MAKE_DIRECTORY "${JSON_INCLUDE_DIR}")
+  file(DOWNLOAD
+          "https://raw.githubusercontent.com/nlohmann/json/v3.11.3/single_include/nlohmann/json.hpp"
+          "${JSON_HEADER}"
+          SHOW_PROGRESS
+          STATUS JSON_DOWNLOAD_STATUS
+  )
+  list(GET JSON_DOWNLOAD_STATUS 0 JSON_DOWNLOAD_CODE)
+  if(NOT JSON_DOWNLOAD_CODE EQUAL 0)
+    message(FATAL_ERROR "Failed to download json.hpp: ${JSON_DOWNLOAD_STATUS}")
+  endif()
+endif()
+
+target_include_directories(${PROJECT_NAME} PRIVATE "${JSON_INCLUDE_DIR}")
 
 target_link_libraries(${PROJECT_NAME} PRIVATE glfw glm::glm)
 

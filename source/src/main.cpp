@@ -28,7 +28,7 @@ struct Vertex {
 
 // MAIN !
 
-class Skeleton26ReplaceName : public BaseProject {
+class DungeonTavernNPCApp : public BaseProject {
 	protected:
 	// Here you list all the Vulkan objects you need:
 	
@@ -60,9 +60,9 @@ class Skeleton26ReplaceName : public BaseProject {
 	// Here you set the main application parameters
 	void setWindowParameters() {
 		// window size, titile and initial background
-		windowWidth = 800;
-		windowHeight = 600;
-		windowTitle = "Skeleton: place the name of your app here";
+		windowWidth = 1600;
+		windowHeight = 900;
+		windowTitle = "Zijie & Zhiying DungeonTavernNPC";
     	windowResizable = GLFW_TRUE;
 		
 		// Initial aspect ratio
@@ -209,7 +209,7 @@ class Skeleton26ReplaceName : public BaseProject {
 	static void populateCommandBufferAccess(VkCommandBuffer commandBuffer, int currentImage, void *Params) {
 		// Simple trick to avoid having always 'T->'
 		// in che code that populates the command buffer!
-		Skeleton26ReplaceName *T = (Skeleton26ReplaceName *)Params;
+		DungeonTavernNPCApp *T = (DungeonTavernNPCApp *)Params;
 		T->populateCommandBuffer(commandBuffer, currentImage);
 	}
 
@@ -320,7 +320,7 @@ class Skeleton26ReplaceName : public BaseProject {
 
 // This is the main: probably you do not need to touch this!
 int main() {
-    Skeleton26ReplaceName app;
+    DungeonTavernNPCApp app;
 
     try {
         app.run(false);

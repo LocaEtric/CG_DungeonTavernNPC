@@ -1,0 +1,33 @@
+{
+  "assetfiles": [],
+  "models": [
+    {
+      "id": "floor",
+      "format": "MGCG",
+      "VD": "VDposUV",
+      "model": "assets/models/floor_Mesh.7127.mgcg"
+    }
+  ],
+  "textures": [
+    {
+      "id": "floor_albedo",
+      "format": "Color",
+      "texture": "assets/models/floor_Mesh.7127.png"
+    }
+  ],
+  "instances": [
+    {
+      "technique": "BlinnPos",
+      "elements": [
+        {
+          "id": "floor_instance",
+          "model": "floor",
+          "texture": ["floor_albedo"],
+          "translate": [0.0, 0.0, 0.0],
+          "eulerAngles": [0.0, 0.0, 0.0],
+          "scale": [1.0, 1.0, 1.0]
+        }
+      ]
+    }
+  ]
+}
