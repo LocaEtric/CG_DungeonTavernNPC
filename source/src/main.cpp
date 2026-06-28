@@ -57,7 +57,16 @@ class DungeonTavernNPCApp : public BaseProject {
 
 	glm::mat4 ViewPrj;
 	glm::mat4 View;
-	
+
+	// Camera parameters
+	// Initial position inside the tavern
+	glm::vec3 cameraPos = glm::vec3(0.0f, 1.7f, 2.6f);
+
+	float yaw = 0.0f;
+
+	const float moveSpeed = 3.0f;
+	const float rotateSpeed = 2.0f;
+
 	// Here you set the main application parameters
 	void setWindowParameters() {
 		// window size, titile and initial background
@@ -309,11 +318,32 @@ class DungeonTavernNPCApp : public BaseProject {
 		Prj[1][1] *= -1;
 
 		// View
-		// Temporary debug camera placed inside the tavern, so the entrance door
-		// does not block the fixed view before first-person movement is added.
-		View = glm::lookAt(glm::vec3(0.0f, 1.7f, 2.6f),   // Pos
-						   glm::vec3(0.0f, 0.9f, -1.8f),  // Target
-						   glm::vec3(0.0f, 1.0f, 0.0f));
+		// Update camera rotation
+		yaw += rotateSpeed * r.y * deltaT;
+
+		// Compute camera directions
+		glm::vec3 forward(
+			glm::sin(yaw),
+			0.0f,
+			-glm::cos(yaw)
+		);
+
+		glm::vec3 right(
+			glm::cos(yaw),
+			0.0f,
+			glm::sin(yaw)
+		);
+
+		// Move camera
+		cameraPos -= forward * m.z * moveSpeed * deltaT;
+		cameraPos += right * m.x * moveSpeed * deltaT;
+
+		// Build view matrix
+		View = glm::lookAt(
+			cameraPos,
+			cameraPos + forward,
+			glm::vec3(0.0f, 1.0f, 0.0f)
+		);
 
 		// View-Projection
 		ViewPrj = Prj * View;
