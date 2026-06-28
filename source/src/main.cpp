@@ -57,6 +57,17 @@ class DungeonTavernNPCApp : public BaseProject {
 
 	glm::mat4 ViewPrj;
 	glm::mat4 View;
+
+	// Camera parameters
+	// Initial position inside the tavern
+	glm::vec3 cameraPos = glm::vec3(0.0f, 1.7f, 2.6f);
+
+	float yaw = 0.0f;
+	float pitch = 0.0f;
+
+	const float moveSpeed = 3.0f;
+	const float verticalSpeed = 1.5f;
+	const float rotateSpeed = 2.0f;
 	
 	// Here you set the main application parameters
 	void setWindowParameters() {
@@ -308,12 +319,59 @@ class DungeonTavernNPCApp : public BaseProject {
 		glm::mat4 Prj = glm::perspective(FOVy, Ar, nearPlane, farPlane);
 		Prj[1][1] *= -1;
 
+		// // View
+		// // Temporary debug camera placed inside the tavern, so the entrance door
+		// // does not block the fixed view before first-person movement is added.
+		// View = glm::lookAt(glm::vec3(0.0f, 1.7f, 2.6f),   // Pos
+		// 				   glm::vec3(0.0f, 0.9f, -1.8f),  // Target
+		// 				   glm::vec3(0.0f, 1.0f, 0.0f));
+
 		// View
-		// Temporary debug camera placed inside the tavern, so the entrance door
-		// does not block the fixed view before first-person movement is added.
-		View = glm::lookAt(glm::vec3(0.0f, 1.7f, 2.6f),   // Pos
-						   glm::vec3(0.0f, 0.9f, -1.8f),  // Target
-						   glm::vec3(0.0f, 1.0f, 0.0f));
+		// Update camera rotation
+		float pitchInput = r.x;
+		// getSixAxis maps keyboard Up/Down opposite to our camera pitch convention.
+		if(glfwGetKey(window, GLFW_KEY_UP) && !glfwGetKey(window, GLFW_KEY_DOWN)) {
+			pitchInput = 1.0f;
+		}
+		if(glfwGetKey(window, GLFW_KEY_DOWN) && !glfwGetKey(window, GLFW_KEY_UP)) {
+			pitchInput = -1.0f;
+		}
+
+		yaw += rotateSpeed * r.y * deltaT;
+		pitch += rotateSpeed * pitchInput * deltaT;
+		pitch = glm::clamp(pitch, glm::radians(-75.0f), glm::radians(75.0f));
+
+		// Compute camera directions
+		glm::vec3 viewForward = glm::normalize(glm::vec3(
+			glm::sin(yaw) * glm::cos(pitch),
+			glm::sin(pitch),
+			-glm::cos(yaw) * glm::cos(pitch)
+		));
+
+		glm::vec3 moveForward(
+			glm::sin(yaw),
+			0.0f,
+			-glm::cos(yaw)
+		);
+
+		glm::vec3 right(
+			glm::cos(yaw),
+			0.0f,
+			glm::sin(yaw)
+		);
+
+		// Move camera
+		cameraPos -= moveForward * m.z * moveSpeed * deltaT;
+		cameraPos += right * m.x * moveSpeed * deltaT;
+		cameraPos.y += m.y * verticalSpeed * deltaT;
+		cameraPos.y = glm::clamp(cameraPos.y, 0.8f, 2.4f);
+
+		// Build view matrix
+		View = glm::lookAt(
+			cameraPos,
+			cameraPos + viewForward,
+			glm::vec3(0.0f, 1.0f, 0.0f)
+		);
 
 		// View-Projection
 		ViewPrj = Prj * View;
