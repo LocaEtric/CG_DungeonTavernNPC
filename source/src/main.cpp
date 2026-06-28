@@ -76,7 +76,18 @@ class DungeonTavernNPCApp : public BaseProject {
 	const int cameraRoomLimitFlag = 1; // 1 = stay inside the room, 0 = free debug camera.
 	const glm::vec3 cameraRoomMin = glm::vec3(-4.55f, 0.35f, -11.25f);
 	const glm::vec3 cameraRoomMax = glm::vec3(4.55f, 4.25f, 4.75f);
-	
+
+	// NPC greater and bartender
+	glm::vec3 greeterPos = glm::vec3(3.0f, 1.05f, 2.9f);
+	glm::vec3 bartenderPos = glm::vec3(0.0f, 1.2f, -10.2f);
+
+	bool registered = false;
+	bool registerHintShown = false;
+
+	bool orderHintShown = false;
+	bool orderCompleted = false;
+	std::string message = "";
+
 	// Here you set the main application parameters
 	void setWindowParameters() {
 		// window size, titile and initial background
@@ -92,6 +103,9 @@ class DungeonTavernNPCApp : public BaseProject {
 	// What to do when the window changes size
 	void onWindowResize(int w, int h) {
 		std::cout << "Window resized to: " << w << " x " << h << "\n";
+		// Avoid division by zero when the window is minimized.
+		if (w == 0 || h == 0)
+			return;
 		Ar = (float)w / (float)h;
 		// Update Render Pass
 		RP.width = w;
@@ -312,14 +326,18 @@ class DungeonTavernNPCApp : public BaseProject {
 			float Fps = (float)countedFrames / elapsedT;
 			
 			std::ostringstream oss;
+
 			oss << "FPS: " << Fps << "\n";
 
+
+
 			txt.print(1.0f, 1.0f, oss.str(), 1, "CO", false, false, true,TAL_RIGHT,TRH_RIGHT,TRV_BOTTOM,{1.0f,0.0f,0.0f,1.0f},{0.8f,0.8f,0.0f,1.0f});
-			
+			if (!message.empty()) txt.print(-0.95f, -0.95f, message, 3, "CO", false, true, true, TAL_LEFT, TRH_LEFT, TRV_TOP, {1.0f,1.0f,1.0f,1.0f}, {0.0f,0.0f,0.0f,1.0f});
+
 			elapsedT = 0.0f;
 		    countedFrames = 0;
 		}
-		
+
 		txt.updateCommandBuffer();
 	}
 	
@@ -388,6 +406,64 @@ class DungeonTavernNPCApp : public BaseProject {
 		if(cameraRoomLimitFlag == 1) {
 			cameraPos = glm::clamp(cameraPos, cameraRoomMin, cameraRoomMax);
 		}
+
+		//npc door greater
+		float d = glm::distance(cameraPos, greeterPos);
+
+		if (d < 2.0f)
+		{
+			if (!registered && !registerHintShown)
+			{
+				message = "Press E to register";
+				registerHintShown = true;
+			}
+
+			if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS && !registered)
+			{
+				registered = true;
+				message = "Registration completed!";
+			}
+		}
+		else
+		{
+			registerHintShown = false;
+
+			if (!orderHintShown)
+				message.clear();
+		}
+		//npc bartender
+		float d2 = glm::distance(cameraPos, bartenderPos);
+
+		if (d2 < 2.0f)
+		{
+			if (!orderHintShown)
+			{
+				message = "Press E to order";
+				orderHintShown = true;
+			}
+
+			if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS && !orderCompleted)
+			{
+				orderCompleted = true;
+				if (registered)
+				{
+					message = "Welcome! What would you like to drink?";
+				}
+				else
+				{
+					message = "Please register with the greeter first.";
+				}
+			}
+		}
+		else
+		{
+			orderHintShown = false;
+			orderCompleted = false;
+
+			if (!registerHintShown)
+				message.clear();
+		}
+
 
 		// Build view matrix
 		View = glm::lookAt(
