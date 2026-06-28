@@ -23,6 +23,7 @@ struct GlobalUniformBufferObject {
 
 struct Vertex {
 	glm::vec3 pos;
+	glm::vec3 norm;
 	glm::vec2 UV;
 };
 
@@ -105,7 +106,9 @@ class DungeonTavernNPCApp : public BaseProject {
 				}, {
 				  {0, 0, VK_FORMAT_R32G32B32_SFLOAT, offsetof(Vertex, pos),
 				         sizeof(glm::vec3), POSITION},
-				  {0, 1, VK_FORMAT_R32G32_SFLOAT, offsetof(Vertex, UV),
+				  {0, 1, VK_FORMAT_R32G32B32_SFLOAT, offsetof(Vertex, norm),
+				         sizeof(glm::vec3), NORMAL},
+				  {0, 2, VK_FORMAT_R32G32_SFLOAT, offsetof(Vertex, UV),
 				         sizeof(glm::vec2), UV}
 				});
 
@@ -130,10 +133,10 @@ class DungeonTavernNPCApp : public BaseProject {
 
 		// to support scene
 		VDRs.resize(1);
-		VDRs[0].init("VDposUV",  &VD);
+		VDRs[0].init("VDposNormUV",  &VD);
 
 		PRs.resize(1);
-		PRs[0].init("BlinnPos", {
+		PRs[0].init("BlinnPhong", {
 							{&P, {//Pipeline and DSL for the main pass
 							 /*DSLglobal*/{},
 							 /*DSLlocal*/{
@@ -306,8 +309,10 @@ class DungeonTavernNPCApp : public BaseProject {
 		Prj[1][1] *= -1;
 
 		// View
-		View = glm::lookAt(glm::vec3(0.0f, 1.0f, 5.0f), // Pos
-						   glm::vec3(0.0f),				// Target
+		// Temporary debug camera placed inside the tavern, so the entrance door
+		// does not block the fixed view before first-person movement is added.
+		View = glm::lookAt(glm::vec3(0.0f, 1.7f, 2.6f),   // Pos
+						   glm::vec3(0.0f, 0.9f, -1.8f),  // Target
 						   glm::vec3(0.0f, 1.0f, 0.0f));
 
 		// View-Projection

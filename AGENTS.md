@@ -61,4 +61,4 @@ This file must be read at the start of every agent session before changing the p
 - After code or shader changes, build the project when practical.
 - If a runtime feature is changed, run the application when practical and record the result.
 - If verification cannot be completed, document the reason clearly in the development log and final response.
-
+- If the local compiler or build tool repeatedly returns unclear errors while the user can build and run successfully in CLion, do not keep retrying the same build loop. Stop after a reasonable check, ask the user to manually build/run, and record manual verification status in the development log.

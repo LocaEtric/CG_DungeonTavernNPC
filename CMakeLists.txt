@@ -125,9 +125,12 @@ add_dependencies(${PROJECT_NAME} shaders)
 set(ASSET_SRC_DIR "${CMAKE_SOURCE_DIR}/source/assets")
 set(ASSET_DST_DIR "$<TARGET_FILE_DIR:${PROJECT_NAME}>/assets")
 
-add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+add_custom_target(copy_assets ALL
+  COMMAND ${CMAKE_COMMAND} -E rm -rf
+    "${ASSET_DST_DIR}"
   COMMAND ${CMAKE_COMMAND} -E copy_directory
     "${ASSET_SRC_DIR}"
     "${ASSET_DST_DIR}"
   COMMENT "Copio asset in: ${ASSET_DST_DIR}"
 )
+add_dependencies(${PROJECT_NAME} copy_assets)

@@ -2,7 +2,8 @@
 #extension GL_ARB_separate_shader_objects : enable
 
 layout(location = 0) in vec3 fragPos;
-layout(location = 1) in vec2 fragUV;
+layout(location = 1) in vec3 fragNormal;
+layout(location = 2) in vec2 fragUV;
 
 layout(location = 0) out vec4 outColor;
 
@@ -17,9 +18,7 @@ layout(binding = 0, set = 0) uniform GlobalUniformBufferObject {
 const float PI = 3.14159265359;
 
 void main() {
-	vec3 X = dFdx(fragPos);
-    vec3 Y = dFdy(fragPos);
-    vec3 N = -normalize(cross(X,Y));
+    vec3 N = normalize(fragNormal);
 
     vec3 albedo = pow(texture(albedoMap, fragUV).rgb, vec3(2.2)); 
 

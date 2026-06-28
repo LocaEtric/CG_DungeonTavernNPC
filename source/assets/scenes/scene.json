@@ -4,28 +4,878 @@
     {
       "id": "floor",
       "format": "MGCG",
-      "VD": "VDposUV",
+      "VD": "VDposNormUV",
       "model": "assets/models/floor_Mesh.7127.mgcg"
+    },
+    {
+      "id": "stone_wall",
+      "format": "MGCG",
+      "VD": "VDposNormUV",
+      "model": "assets/models/tunnel.021_Mesh.196.mgcg"
+    },
+    {
+      "id": "corner_wall",
+      "format": "MGCG",
+      "VD": "VDposNormUV",
+      "model": "assets/models/tunnel.022_Mesh.4400.mgcg"
+    },
+    {
+      "id": "brick_corner",
+      "format": "MGCG",
+      "VD": "VDposNormUV",
+      "model": "assets/models/tunnel.030_Mesh.7968.mgcg"
+    },
+    {
+      "id": "door",
+      "format": "MGCG",
+      "VD": "VDposNormUV",
+      "model": "assets/models/door.002_Mesh.7405.mgcg"
+    },
+    {
+      "id": "bench_table",
+      "format": "MGCG",
+      "VD": "VDposNormUV",
+      "model": "assets/models/table.001_Mesh.7007.mgcg"
+    },
+    {
+      "id": "round_table",
+      "format": "MGCG",
+      "VD": "VDposNormUV",
+      "model": "assets/models/table.015_Mesh.7354.mgcg"
+    },
+    {
+      "id": "plain_chair",
+      "format": "MGCG",
+      "VD": "VDposNormUV",
+      "model": "assets/models/chair.003_Mesh.6582.mgcg"
+    },
+    {
+      "id": "round_chair",
+      "format": "MGCG",
+      "VD": "VDposNormUV",
+      "model": "assets/models/chair.005_Mesh.7153.mgcg"
+    },
+    {
+      "id": "barrel",
+      "format": "MGCG",
+      "VD": "VDposNormUV",
+      "model": "assets/models/barrel.001_Mesh.4453.mgcg"
+    },
+    {
+      "id": "barrel_stack",
+      "format": "MGCG",
+      "VD": "VDposNormUV",
+      "model": "assets/models/barrel.002_Mesh.4450.mgcg"
+    },
+    {
+      "id": "wooden_box",
+      "format": "MGCG",
+      "VD": "VDposNormUV",
+      "model": "assets/models/box.002_Mesh.899.mgcg"
+    },
+    {
+      "id": "small_chest",
+      "format": "MGCG",
+      "VD": "VDposNormUV",
+      "model": "assets/models/box.006_Mesh.216.mgcg"
+    },
+    {
+      "id": "cupboard",
+      "format": "MGCG",
+      "VD": "VDposNormUV",
+      "model": "assets/models/cupboard.001_Mesh.6553.mgcg"
+    },
+    {
+      "id": "wide_jug",
+      "format": "MGCG",
+      "VD": "VDposNormUV",
+      "model": "assets/models/jug.003_Mesh.902.mgcg"
+    },
+    {
+      "id": "bottle_jug",
+      "format": "MGCG",
+      "VD": "VDposNormUV",
+      "model": "assets/models/jug.009_Mesh.220.mgcg"
+    },
+    {
+      "id": "green_bottle",
+      "format": "MGCG",
+      "VD": "VDposNormUV",
+      "model": "assets/models/prop.030_Mesh.7394.mgcg"
+    },
+    {
+      "id": "bottle_rack",
+      "format": "MGCG",
+      "VD": "VDposNormUV",
+      "model": "assets/models/prop.035_Mesh.6860.mgcg"
+    },
+    {
+      "id": "open_book",
+      "format": "MGCG",
+      "VD": "VDposNormUV",
+      "model": "assets/models/prop.044_Mesh.6555.mgcg"
+    },
+    {
+      "id": "table_candle",
+      "format": "MGCG",
+      "VD": "VDposNormUV",
+      "model": "assets/models/light.010_Mesh.6200.mgcg"
+    },
+    {
+      "id": "wall_candles",
+      "format": "MGCG",
+      "VD": "VDposNormUV",
+      "model": "assets/models/light.012_Mesh.4744.mgcg"
+    },
+    {
+      "id": "chandelier",
+      "format": "MGCG",
+      "VD": "VDposNormUV",
+      "model": "assets/models/light.017_Mesh.470.mgcg"
+    },
+    {
+      "id": "npc_marker",
+      "format": "MGCG",
+      "VD": "VDposNormUV",
+      "model": "assets/models/prop.042_Mesh.7896.mgcg"
     }
   ],
   "textures": [
     {
-      "id": "floor_albedo",
+      "id": "dungeon_palette",
       "format": "Color",
-      "texture": "assets/models/floor_Mesh.7127.png"
+      "texture": "assets/models/Textures.png"
     }
   ],
   "instances": [
     {
-      "technique": "BlinnPos",
+      "technique": "BlinnPhong",
       "elements": [
         {
-          "id": "floor_instance",
+          "id": "floor_main",
           "model": "floor",
-          "texture": ["floor_albedo"],
-          "translate": [0.0, 0.0, 0.0],
-          "eulerAngles": [0.0, 0.0, 0.0],
-          "scale": [1.0, 1.0, 1.0]
+          "texture": [
+            "dungeon_palette"
+          ],
+          "translate": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "eulerAngles": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            4.0,
+            1.0,
+            4.0
+          ]
+        },
+        {
+          "id": "back_wall_center",
+          "model": "stone_wall",
+          "texture": [
+            "dungeon_palette"
+          ],
+          "translate": [
+            0.0,
+            0.0,
+            -4.0
+          ],
+          "eulerAngles": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            1.4,
+            1.2,
+            1.2
+          ]
+        },
+        {
+          "id": "left_wall",
+          "model": "stone_wall",
+          "texture": [
+            "dungeon_palette"
+          ],
+          "translate": [
+            -4.0,
+            0.0,
+            0.0
+          ],
+          "eulerAngles": [
+            0.0,
+            90.0,
+            0.0
+          ],
+          "scale": [
+            1.6,
+            1.2,
+            1.2
+          ]
+        },
+        {
+          "id": "right_wall",
+          "model": "stone_wall",
+          "texture": [
+            "dungeon_palette"
+          ],
+          "translate": [
+            4.0,
+            0.0,
+            0.0
+          ],
+          "eulerAngles": [
+            0.0,
+            -90.0,
+            0.0
+          ],
+          "scale": [
+            1.6,
+            1.2,
+            1.2
+          ]
+        },
+        {
+          "id": "back_left_corner",
+          "model": "corner_wall",
+          "texture": [
+            "dungeon_palette"
+          ],
+          "translate": [
+            -3.8,
+            0.0,
+            -3.8
+          ],
+          "eulerAngles": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            1.1,
+            1.1,
+            1.1
+          ]
+        },
+        {
+          "id": "back_right_corner",
+          "model": "brick_corner",
+          "texture": [
+            "dungeon_palette"
+          ],
+          "translate": [
+            3.8,
+            0.0,
+            -3.8
+          ],
+          "eulerAngles": [
+            0.0,
+            90.0,
+            0.0
+          ],
+          "scale": [
+            1.1,
+            1.1,
+            1.1
+          ]
+        },
+        {
+          "id": "entrance_door",
+          "model": "door",
+          "texture": [
+            "dungeon_palette"
+          ],
+          "translate": [
+            0.0,
+            0.0,
+            4.1
+          ],
+          "eulerAngles": [
+            0.0,
+            180.0,
+            0.0
+          ],
+          "scale": [
+            1.1,
+            1.1,
+            1.1
+          ]
+        },
+        {
+          "id": "bar_counter_left",
+          "model": "wooden_box",
+          "texture": [
+            "dungeon_palette"
+          ],
+          "translate": [
+            -1.2,
+            0.0,
+            -2.45
+          ],
+          "eulerAngles": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            1.3,
+            0.8,
+            0.75
+          ]
+        },
+        {
+          "id": "bar_counter_center",
+          "model": "wooden_box",
+          "texture": [
+            "dungeon_palette"
+          ],
+          "translate": [
+            0.0,
+            0.0,
+            -2.45
+          ],
+          "eulerAngles": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            1.3,
+            0.8,
+            0.75
+          ]
+        },
+        {
+          "id": "bar_counter_right",
+          "model": "wooden_box",
+          "texture": [
+            "dungeon_palette"
+          ],
+          "translate": [
+            1.2,
+            0.0,
+            -2.45
+          ],
+          "eulerAngles": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            1.3,
+            0.8,
+            0.75
+          ]
+        },
+        {
+          "id": "npc_placeholder",
+          "model": "npc_marker",
+          "texture": [
+            "dungeon_palette"
+          ],
+          "translate": [
+            0.0,
+            0.95,
+            -3.05
+          ],
+          "eulerAngles": [
+            0.0,
+            180.0,
+            0.0
+          ],
+          "scale": [
+            0.55,
+            0.55,
+            0.55
+          ]
+        },
+        {
+          "id": "back_cupboard",
+          "model": "cupboard",
+          "texture": [
+            "dungeon_palette"
+          ],
+          "translate": [
+            -2.7,
+            0.0,
+            -3.35
+          ],
+          "eulerAngles": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            0.8,
+            0.8,
+            0.8
+          ]
+        },
+        {
+          "id": "bottle_rack_on_bar",
+          "model": "bottle_rack",
+          "texture": [
+            "dungeon_palette"
+          ],
+          "translate": [
+            1.15,
+            0.95,
+            -2.45
+          ],
+          "eulerAngles": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            0.45,
+            0.45,
+            0.45
+          ]
+        },
+        {
+          "id": "green_bottle_on_bar",
+          "model": "green_bottle",
+          "texture": [
+            "dungeon_palette"
+          ],
+          "translate": [
+            -0.55,
+            0.95,
+            -2.35
+          ],
+          "eulerAngles": [
+            0.0,
+            -20.0,
+            0.0
+          ],
+          "scale": [
+            0.35,
+            0.35,
+            0.35
+          ]
+        },
+        {
+          "id": "wide_jug_on_bar",
+          "model": "wide_jug",
+          "texture": [
+            "dungeon_palette"
+          ],
+          "translate": [
+            0.35,
+            0.95,
+            -2.35
+          ],
+          "eulerAngles": [
+            0.0,
+            35.0,
+            0.0
+          ],
+          "scale": [
+            0.35,
+            0.35,
+            0.35
+          ]
+        },
+        {
+          "id": "left_round_table",
+          "model": "round_table",
+          "texture": [
+            "dungeon_palette"
+          ],
+          "translate": [
+            -2.15,
+            0.0,
+            0.4
+          ],
+          "eulerAngles": [
+            0.0,
+            25.0,
+            0.0
+          ],
+          "scale": [
+            0.9,
+            0.9,
+            0.9
+          ]
+        },
+        {
+          "id": "left_table_chair_a",
+          "model": "round_chair",
+          "texture": [
+            "dungeon_palette"
+          ],
+          "translate": [
+            -3.0,
+            0.0,
+            0.35
+          ],
+          "eulerAngles": [
+            0.0,
+            90.0,
+            0.0
+          ],
+          "scale": [
+            0.8,
+            0.8,
+            0.8
+          ]
+        },
+        {
+          "id": "left_table_chair_b",
+          "model": "plain_chair",
+          "texture": [
+            "dungeon_palette"
+          ],
+          "translate": [
+            -1.35,
+            0.0,
+            0.35
+          ],
+          "eulerAngles": [
+            0.0,
+            -90.0,
+            0.0
+          ],
+          "scale": [
+            0.8,
+            0.8,
+            0.8
+          ]
+        },
+        {
+          "id": "left_table_chair_c",
+          "model": "plain_chair",
+          "texture": [
+            "dungeon_palette"
+          ],
+          "translate": [
+            -2.15,
+            0.0,
+            1.2
+          ],
+          "eulerAngles": [
+            0.0,
+            180.0,
+            0.0
+          ],
+          "scale": [
+            0.8,
+            0.8,
+            0.8
+          ]
+        },
+        {
+          "id": "right_bench_table",
+          "model": "bench_table",
+          "texture": [
+            "dungeon_palette"
+          ],
+          "translate": [
+            2.1,
+            0.0,
+            0.75
+          ],
+          "eulerAngles": [
+            0.0,
+            -20.0,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "id": "right_table_chair_a",
+          "model": "plain_chair",
+          "texture": [
+            "dungeon_palette"
+          ],
+          "translate": [
+            1.35,
+            0.0,
+            0.2
+          ],
+          "eulerAngles": [
+            0.0,
+            -50.0,
+            0.0
+          ],
+          "scale": [
+            0.8,
+            0.8,
+            0.8
+          ]
+        },
+        {
+          "id": "right_table_chair_b",
+          "model": "plain_chair",
+          "texture": [
+            "dungeon_palette"
+          ],
+          "translate": [
+            2.85,
+            0.0,
+            1.2
+          ],
+          "eulerAngles": [
+            0.0,
+            130.0,
+            0.0
+          ],
+          "scale": [
+            0.8,
+            0.8,
+            0.8
+          ]
+        },
+        {
+          "id": "book_on_right_table",
+          "model": "open_book",
+          "texture": [
+            "dungeon_palette"
+          ],
+          "translate": [
+            2.05,
+            0.8,
+            0.75
+          ],
+          "eulerAngles": [
+            0.0,
+            -25.0,
+            0.0
+          ],
+          "scale": [
+            0.35,
+            0.35,
+            0.35
+          ]
+        },
+        {
+          "id": "bottle_on_right_table",
+          "model": "bottle_jug",
+          "texture": [
+            "dungeon_palette"
+          ],
+          "translate": [
+            2.45,
+            0.82,
+            0.55
+          ],
+          "eulerAngles": [
+            0.0,
+            15.0,
+            0.0
+          ],
+          "scale": [
+            0.35,
+            0.35,
+            0.35
+          ]
+        },
+        {
+          "id": "front_barrel",
+          "model": "barrel",
+          "texture": [
+            "dungeon_palette"
+          ],
+          "translate": [
+            -3.1,
+            0.0,
+            2.25
+          ],
+          "eulerAngles": [
+            0.0,
+            25.0,
+            0.0
+          ],
+          "scale": [
+            0.85,
+            0.85,
+            0.85
+          ]
+        },
+        {
+          "id": "left_barrel_stack",
+          "model": "barrel_stack",
+          "texture": [
+            "dungeon_palette"
+          ],
+          "translate": [
+            -3.2,
+            0.0,
+            -1.75
+          ],
+          "eulerAngles": [
+            0.0,
+            50.0,
+            0.0
+          ],
+          "scale": [
+            0.85,
+            0.85,
+            0.85
+          ]
+        },
+        {
+          "id": "right_storage_chest",
+          "model": "small_chest",
+          "texture": [
+            "dungeon_palette"
+          ],
+          "translate": [
+            3.05,
+            0.0,
+            -1.8
+          ],
+          "eulerAngles": [
+            0.0,
+            -35.0,
+            0.0
+          ],
+          "scale": [
+            0.85,
+            0.85,
+            0.85
+          ]
+        },
+        {
+          "id": "right_storage_box",
+          "model": "wooden_box",
+          "texture": [
+            "dungeon_palette"
+          ],
+          "translate": [
+            3.15,
+            0.0,
+            -2.75
+          ],
+          "eulerAngles": [
+            0.0,
+            15.0,
+            0.0
+          ],
+          "scale": [
+            0.85,
+            0.85,
+            0.85
+          ]
+        },
+        {
+          "id": "table_candle_left",
+          "model": "table_candle",
+          "texture": [
+            "dungeon_palette"
+          ],
+          "translate": [
+            -2.15,
+            0.78,
+            0.4
+          ],
+          "eulerAngles": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            0.35,
+            0.35,
+            0.35
+          ]
+        },
+        {
+          "id": "table_candle_right",
+          "model": "table_candle",
+          "texture": [
+            "dungeon_palette"
+          ],
+          "translate": [
+            1.75,
+            0.82,
+            0.9
+          ],
+          "eulerAngles": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            0.35,
+            0.35,
+            0.35
+          ]
+        },
+        {
+          "id": "wall_candle_left",
+          "model": "wall_candles",
+          "texture": [
+            "dungeon_palette"
+          ],
+          "translate": [
+            -3.72,
+            1.55,
+            -1.25
+          ],
+          "eulerAngles": [
+            0.0,
+            90.0,
+            0.0
+          ],
+          "scale": [
+            0.5,
+            0.5,
+            0.5
+          ]
+        },
+        {
+          "id": "wall_candle_right",
+          "model": "wall_candles",
+          "texture": [
+            "dungeon_palette"
+          ],
+          "translate": [
+            3.72,
+            1.55,
+            -1.25
+          ],
+          "eulerAngles": [
+            0.0,
+            -90.0,
+            0.0
+          ],
+          "scale": [
+            0.5,
+            0.5,
+            0.5
+          ]
+        },
+        {
+          "id": "ceiling_chandelier",
+          "model": "chandelier",
+          "texture": [
+            "dungeon_palette"
+          ],
+          "translate": [
+            0.0,
+            2.6,
+            -0.5
+          ],
+          "eulerAngles": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            0.65,
+            0.65,
+            0.65
+          ]
         }
       ]
     }
