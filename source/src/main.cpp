@@ -68,6 +68,11 @@ class DungeonTavernNPCApp : public BaseProject {
 	const float moveSpeed = 3.0f;
 	const float verticalSpeed = 1.5f;
 	const float rotateSpeed = 2.0f;
+
+	// NPC
+	glm::vec3 greeterPos = glm::vec3(3.0f, 1.05f, 2.9f);
+
+	bool registered = false;
 	
 	// Here you set the main application parameters
 	void setWindowParameters() {
@@ -365,6 +370,11 @@ class DungeonTavernNPCApp : public BaseProject {
 		cameraPos += right * m.x * moveSpeed * deltaT;
 		cameraPos.y += m.y * verticalSpeed * deltaT;
 		cameraPos.y = glm::clamp(cameraPos.y, -0.5f, 5.4f);
+
+		if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
+		{
+			std::cout << "E pressed!" << std::endl;
+		}
 
 		// Build view matrix
 		View = glm::lookAt(
