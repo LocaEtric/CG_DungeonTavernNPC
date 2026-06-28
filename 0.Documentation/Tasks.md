@@ -70,3 +70,21 @@
 };
 ```
 
+---
+
+## Dev Process:
+
+- 增加R/F的Z轴视角平移，设置了移动上下限为天花板和地板。
+- 门、墙体的灰色背板和石砖墙面之间有距离。用AI生成了干净的obj纹理，先确定了房间整体尺寸，之后再手动生成纹理贴图
+- XYZ位置已调准：
+  - 吧台大桌子`bar_counter_table`、四角四个垫高的小箱子`bar_support_box_fl/fr/bl/br`
+  - 吧台左边瓶架子`back_cupboard_L`
+  - 吧台右边抽屉柜`back_locker_R`
+  - 左侧圆桌`left_round_table` + 三个凳子`left_table_chair_a/b/c`
+  - 右侧长桌`right_bench_table` + 两个凳子`right_long_table_chair_a/b`
+  - 门口桌子`front_porch_table` + 一个凳子`right_porch_table_chair`
+  - 两个交互NPC任务位置：`npc_bartender`、`npc_door_greeter`
+
+
+
+- [ ] 加上torture素材，凸出“地牢”

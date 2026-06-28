@@ -125,8 +125,8 @@ class DungeonTavernNPCApp : public BaseProject {
 
 		// initializes the render passes
 		RP.init(this);
-		// sets the blue sky
-		RP.properties[0].clearValue = {0.0f,0.9f,1.0f,1.0f};
+		// Dark background for the closed indoor tavern scene.
+		RP.properties[0].clearValue = {0.025f, 0.022f, 0.020f, 1.0f};
 
 		// Pipelines [Shader couples]
 		// The last array, is a vector of pointer to the layouts of the sets that will
@@ -364,7 +364,7 @@ class DungeonTavernNPCApp : public BaseProject {
 		cameraPos -= moveForward * m.z * moveSpeed * deltaT;
 		cameraPos += right * m.x * moveSpeed * deltaT;
 		cameraPos.y += m.y * verticalSpeed * deltaT;
-		cameraPos.y = glm::clamp(cameraPos.y, 0.8f, 2.4f);
+		cameraPos.y = glm::clamp(cameraPos.y, -0.5f, 5.4f);
 
 		// Build view matrix
 		View = glm::lookAt(
