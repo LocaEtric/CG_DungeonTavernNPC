@@ -39,6 +39,9 @@
   - 吧台大桌子`bar_counter_table`、四角四个垫高的小箱子`bar_support_box_fl/fr/bl/br`
   - 吧台左边瓶架子`back_cupboard_L`
   - 吧台右边抽屉柜`back_locker_R`
+  - 左侧红酒桶堆`left_barrel_stack`
+  - 左侧红酒圆桌`left_wine_table`
+  - 左侧门口红酒桶`front_barrel_L`
   - 左侧圆桌`left_round_table` + 三个凳子`left_table_chair_a/b/c`
   - 右侧长桌`right_bench_table` + 两个凳子`right_long_table_chair_a/b`
   - 门口桌子`front_porch_table` + 一个凳子`right_porch_table_chair`
@@ -46,6 +49,30 @@
   - 五个墙灯：`wall_candle_backwall/FrontLeft/FrontRight/RearLeft/RearRight`
   - 四面墙、屋顶
 
+- NPC交互：
 
+  - 初版能触发交互，但：
+    1. 靠近触发，但远离无法消失交互
+    2. 文字显示集成在fps里，显示效果不稳定，刷新率慢（1Hz）
+    3. 交互触发键 `E` 没有考虑反复触发的情况
+  - 改进：
+    1. E 现在用 `interactionKeyWasPressed` 做边沿触发，按住不会每帧重复触发。
+    2. 交互文字刷新已从 FPS 的 1 秒刷新块中拆出来，改为每帧检查 message 是否变化。
+    3. 远离 NPC 后 message 会清空，并调用 `TextMaker::removeText(3)` 移除旧文字，不会残留在左上角。
+
+
+
+**陈设：**
 
 - [ ] 加上torture素材，凸出“地牢”
+- [ ] 屋内其他陈设继续优化
+
+**NPC交互：**
+
+- [x] Bartender的距离检测范围提高，现在已经突脸了
+- [x] Bartender增加一些可选项
+- [x] Greeter增加checkout选项
+
+**Shader+Pipeline：**
+
+- [ ] bala

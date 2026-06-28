@@ -76,6 +76,8 @@ class DungeonTavernNPCApp : public BaseProject {
 	const int cameraRoomLimitFlag = 1; // 1 = stay inside the room, 0 = free debug camera.
 	const glm::vec3 cameraRoomMin = glm::vec3(-4.55f, 0.35f, -11.25f);
 	const glm::vec3 cameraRoomMax = glm::vec3(4.55f, 4.25f, 4.75f);
+	const float greeterInteractionRadius = 2.0f;
+	const float bartenderInteractionRadius = 3.4f;
 
 	// NPC greater and bartender
 	glm::vec3 greeterPos = glm::vec3(3.0f, 1.05f, 2.9f);
@@ -86,7 +88,13 @@ class DungeonTavernNPCApp : public BaseProject {
 
 	bool orderHintShown = false;
 	bool orderCompleted = false;
+	bool interactionKeyWasPressed = false;
+	bool drinkChoiceKeyWasPressed = false;
+	bool bartenderMenuOpen = false;
 	std::string message = "";
+	std::string displayedInteractionMessage = "";
+	std::string greeterFeedback = "";
+	std::string selectedDrink = "";
 
 	// Here you set the main application parameters
 	void setWindowParameters() {
@@ -260,12 +268,43 @@ class DungeonTavernNPCApp : public BaseProject {
 		RP.end(commandBuffer);
 	}
 
+	float horizontalDistance(glm::vec3 a, glm::vec3 b) {
+		return glm::distance(glm::vec2(a.x, a.z), glm::vec2(b.x, b.z));
+	}
+
+	void updateInteractionText() {
+		const int interactionTextId = 3;
+
+		if(message == displayedInteractionMessage) {
+			return;
+		}
+
+		if(message.empty()) {
+			txt.removeText(interactionTextId);
+		} else {
+			txt.print(-0.95f, -0.95f, message, interactionTextId, "CO", false, true, true,
+					  TAL_LEFT, TRH_LEFT, TRV_TOP,
+					  {1.0f,1.0f,1.0f,1.0f},
+					  {0.0f,0.0f,0.0f,1.0f});
+		}
+
+		displayedInteractionMessage = message;
+	}
+
+	std::string drinkChoiceMenuText() {
+		return "What would you like to drink?\n1. Ale\n2. Red wine\n3. Water";
+	}
+
+	std::string drinkNameFromChoice(int choice) {
+		if(choice == 1) return "Ale";
+		if(choice == 2) return "Red wine";
+		if(choice == 3) return "Water";
+		return "";
+	}
+
 	// Here is where you update the uniforms.
 	// Very likely this will be where you will be writing the logic of your application.
 	void updateUniformBuffer(uint32_t currentImage) {
-		static bool debounce = false;
-		static int curDebounce = 0;
-
 		// handle the ESC key to exit the app
 		if(glfwGetKey(window, GLFW_KEY_ESCAPE)) {
 			glfwSetWindowShouldClose(window, GL_TRUE);
@@ -332,12 +371,12 @@ class DungeonTavernNPCApp : public BaseProject {
 
 
 			txt.print(1.0f, 1.0f, oss.str(), 1, "CO", false, false, true,TAL_RIGHT,TRH_RIGHT,TRV_BOTTOM,{1.0f,0.0f,0.0f,1.0f},{0.8f,0.8f,0.0f,1.0f});
-			if (!message.empty()) txt.print(-0.95f, -0.95f, message, 3, "CO", false, true, true, TAL_LEFT, TRH_LEFT, TRV_TOP, {1.0f,1.0f,1.0f,1.0f}, {0.0f,0.0f,0.0f,1.0f});
 
 			elapsedT = 0.0f;
 		    countedFrames = 0;
 		}
 
+		updateInteractionText();
 		txt.updateCommandBuffer();
 	}
 	
@@ -407,62 +446,86 @@ class DungeonTavernNPCApp : public BaseProject {
 			cameraPos = glm::clamp(cameraPos, cameraRoomMin, cameraRoomMax);
 		}
 
-		//npc door greater
-		float d = glm::distance(cameraPos, greeterPos);
+		// NPC interaction is evaluated after camera movement and room clamping.
+		const bool ePressed = glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS;
+		const bool eJustPressed = ePressed && !interactionKeyWasPressed;
+		const bool key1Pressed = glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS ||
+								 glfwGetKey(window, GLFW_KEY_KP_1) == GLFW_PRESS;
+		const bool key2Pressed = glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS ||
+								 glfwGetKey(window, GLFW_KEY_KP_2) == GLFW_PRESS;
+		const bool key3Pressed = glfwGetKey(window, GLFW_KEY_3) == GLFW_PRESS ||
+								 glfwGetKey(window, GLFW_KEY_KP_3) == GLFW_PRESS;
+		const bool drinkChoicePressed = key1Pressed || key2Pressed || key3Pressed;
+		const bool drinkChoiceJustPressed = drinkChoicePressed && !drinkChoiceKeyWasPressed;
+		const int drinkChoice = key1Pressed ? 1 : (key2Pressed ? 2 : (key3Pressed ? 3 : 0));
+		const bool nearGreeter = horizontalDistance(cameraPos, greeterPos) < greeterInteractionRadius;
+		const bool nearBartender = horizontalDistance(cameraPos, bartenderPos) < bartenderInteractionRadius;
 
-		if (d < 2.0f)
-		{
-			if (!registered && !registerHintShown)
-			{
-				message = "Press E to register";
-				registerHintShown = true;
+		message.clear();
+
+		if(nearGreeter) {
+			if(eJustPressed) {
+				if(registered) {
+					registered = false;
+					orderCompleted = false;
+					bartenderMenuOpen = false;
+					selectedDrink.clear();
+					greeterFeedback = "Checkout completed. See you next time!\nPress E to register again";
+				} else {
+					registered = true;
+					greeterFeedback = "Registration completed. You may proceed to order.\nPress E to check out";
+				}
 			}
 
-			if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS && !registered)
-			{
-				registered = true;
-				message = "Registration completed!";
+			if(!greeterFeedback.empty()) {
+				message = greeterFeedback;
+			} else {
+				message = registered ? "You're registered. Do you want to check out? \nPress E to check out"
+									 : "Press E to register";
 			}
-		}
-		else
-		{
-			registerHintShown = false;
+		} else if(nearBartender) {
+			greeterFeedback.clear();
 
-			if (!orderHintShown)
-				message.clear();
-		}
-		//npc bartender
-		float d2 = glm::distance(cameraPos, bartenderPos);
-
-		if (d2 < 2.0f)
-		{
-			if (!orderHintShown)
-			{
+			if(!registered) {
+				message = "Hello dear customer, please register with the greeter before ordering.";
+			} else if(bartenderMenuOpen) {
+				if(drinkChoiceJustPressed && drinkChoice != 0) {
+					selectedDrink = drinkNameFromChoice(drinkChoice);
+					orderCompleted = true;
+					bartenderMenuOpen = false;
+					message = "You ordered " + selectedDrink + ". Enjoy!";
+				} else {
+					message = drinkChoiceMenuText();
+				}
+			} else if(orderCompleted) {
+				if(eJustPressed) {
+					orderCompleted = false;
+					selectedDrink.clear();
+					bartenderMenuOpen = true;
+					message = drinkChoiceMenuText();
+				} else {
+					message = "You ordered " + selectedDrink + ". Press E to order again";
+				}
+			} else if(eJustPressed) {
+				bartenderMenuOpen = true;
+				message = drinkChoiceMenuText();
+			} else {
 				message = "Press E to order";
-				orderHintShown = true;
 			}
-
-			if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS && !orderCompleted)
-			{
-				orderCompleted = true;
-				if (registered)
-				{
-					message = "Welcome! What would you like to drink?";
-				}
-				else
-				{
-					message = "Please register with the greeter first.";
-				}
-			}
+		} else {
+			greeterFeedback.clear();
 		}
-		else
-		{
-			orderHintShown = false;
+
+		if(!nearBartender) {
 			orderCompleted = false;
-
-			if (!registerHintShown)
-				message.clear();
+			bartenderMenuOpen = false;
+			selectedDrink.clear();
 		}
+
+		registerHintShown = nearGreeter && !registered;
+		orderHintShown = nearBartender && !orderCompleted;
+		interactionKeyWasPressed = ePressed;
+		drinkChoiceKeyWasPressed = drinkChoicePressed;
 
 
 		// Build view matrix
