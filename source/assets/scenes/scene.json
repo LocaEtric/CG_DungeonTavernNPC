@@ -35,7 +35,7 @@
       "id": "door",
       "format": "MGCG",
       "VD": "VDposNormUV",
-      "model": "assets/models/door.002_Mesh.7405.mgcg"
+      "model": "assets/models/door.004_Mesh.4799.mgcg"
     },
     {
       "id": "bench_table",
@@ -245,34 +245,34 @@
         },
         {
           "id": "back_wall_clean",
-          "model": "clean_wall_panel",
+          "model": "stone_wall",
           "texture": [
-            "stone_wall_texture"
+            "dungeon_palette"
           ],
           "translate": [
             0.0,
             0.0,
-            -11.25
+            -11.7
           ],
           "eulerAngles": [
             0.0,
-            0.0,
+            0,
             0.0
           ],
           "scale": [
-            9.0,
-            4.88,
-            1.0
+            1.8,
+            2.05,
+            1.2
           ]
         },
         {
           "id": "left_wall_clean",
-          "model": "clean_wall_panel",
+          "model": "stone_wall",
           "texture": [
-            "stone_wall_texture"
+            "dungeon_palette"
           ],
           "translate": [
-            -4.5,
+            -4.95,
             0.0,
             -3.375
           ],
@@ -282,19 +282,19 @@
             0.0
           ],
           "scale": [
-            15.75,
-            4.88,
-            1.0
+            3.15,
+            2.05,
+            1.2
           ]
         },
         {
           "id": "right_wall_clean",
-          "model": "clean_wall_panel",
+          "model": "stone_wall",
           "texture": [
-            "stone_wall_texture"
+            "dungeon_palette"
           ],
           "translate": [
-            4.5,
+            4.95,
             0.0,
             -3.375
           ],
@@ -304,43 +304,21 @@
             0.0
           ],
           "scale": [
-            15.75,
-            4.88,
-            1.0
-          ]
-        },
-        {
-          "id": "front_left_wall_clean",
-          "model": "clean_wall_panel",
-          "texture": [
-            "stone_wall_texture"
-          ],
-          "translate": [
-            -3.15,
-            0.0,
-            4.5
-          ],
-          "eulerAngles": [
-            0.0,
-            180.0,
-            0.0
-          ],
-          "scale": [
-            2.7,
-            4.88,
-            1.0
-          ]
-        },
-        {
-          "id": "front_right_wall_clean",
-          "model": "clean_wall_panel",
-          "texture": [
-            "stone_wall_texture"
-          ],
-          "translate": [
             3.15,
+            2.05,
+            1.2
+          ]
+        },
+        {
+          "id": "front_wall_clean",
+          "model": "stone_wall",
+          "texture": [
+            "dungeon_palette"
+          ],
+          "translate": [
+            0,
             0.0,
-            4.5
+            5.2
           ],
           "eulerAngles": [
             0.0,
@@ -348,20 +326,108 @@
             0.0
           ],
           "scale": [
-            2.7,
-            4.88,
-            1.0
+            1.8,
+            2.05,
+            1.2
+          ]
+        },
+        {
+          "id": "back_left_corner",
+          "model": "corner_wall",
+          "texture": [
+            "dungeon_palette"
+          ],
+          "translate": [
+            -4.95,
+            0.0,
+            -11.7
+          ],
+          "eulerAngles": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            1.25,
+            2.05,
+            1.25
+          ]
+        },
+        {
+          "id": "back_right_corner",
+          "model": "brick_corner",
+          "texture": [
+            "dungeon_palette"
+          ],
+          "translate": [
+            4.95,
+            0.0,
+            -11.7
+          ],
+          "eulerAngles": [
+            0.0,
+            -90.0,
+            0.0
+          ],
+          "scale": [
+            1.25,
+            2.05,
+            1.25
+          ]
+        },
+        {
+          "id": "front_left_corner",
+          "model": "brick_corner",
+          "texture": [
+            "dungeon_palette"
+          ],
+          "translate": [
+            -4.95,
+            0.0,
+            5.2
+          ],
+          "eulerAngles": [
+            0.0,
+            90.0,
+            0.0
+          ],
+          "scale": [
+            1.25,
+            2.05,
+            1.25
+          ]
+        },
+        {
+          "id": "front_right_corner",
+          "model": "corner_wall",
+          "texture": [
+            "dungeon_palette"
+          ],
+          "translate": [
+            4.95,
+            0.0,
+            5.2
+          ],
+          "eulerAngles": [
+            0.0,
+            180.0,
+            0.0
+          ],
+          "scale": [
+            1.25,
+            2.05,
+            1.25
           ]
         },
         {
           "id": "ceiling_clean",
           "model": "clean_ceiling_panel",
           "texture": [
-            "stone_wall_texture"
+            "dungeon_palette"
           ],
           "translate": [
-            0.0,
-            4.95,
+            -0.5,
+            4.75,
             -3.375
           ],
           "eulerAngles": [
@@ -370,21 +436,21 @@
             0.0
           ],
           "scale": [
-            9.0,
-            1.0,
+            10.0,
+            2.0,
             15.75
           ]
         },
         {
           "id": "front_door_clean",
-          "model": "clean_door_panel",
+          "model": "door",
           "texture": [
-            "wood_door_texture"
+            "dungeon_palette"
           ],
           "translate": [
             0.0,
-            0.08,
-            4.45
+            1.35,
+            4.65
           ],
           "eulerAngles": [
             0.0,
@@ -392,9 +458,31 @@
             0.0
           ],
           "scale": [
-            1.75,
-            2.45,
-            1.0
+            1.1,
+            1.1,
+            1.1
+          ]
+        },
+        {
+          "id": "front_door_outer",
+          "model": "door",
+          "texture": [
+            "dungeon_palette"
+          ],
+          "translate": [
+            0.0,
+            1.35,
+            4.8
+          ],
+          "eulerAngles": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            1.1,
+            1.1,
+            1.1
           ]
         },
         {
@@ -558,13 +646,13 @@
             "dungeon_palette"
           ],
           "translate": [
-            -3.5,
+            -3.7,
             1.05,
-            -10.9
+            -10.3
           ],
           "eulerAngles": [
             0.0,
-            0.0,
+            45.0,
             0.0
           ],
           "scale": [
@@ -582,7 +670,7 @@
           "translate": [
             4.0,
             0.45,
-            -10.5
+            -9.5
           ],
           "eulerAngles": [
             0.0,
@@ -1037,15 +1125,37 @@
           ]
         },
         {
-          "id": "wall_candle_left",
+          "id": "wall_candle_backwall",
           "model": "wall_candles",
           "texture": [
             "dungeon_palette"
           ],
           "translate": [
-            -4.42,
+            0,
+            3.35,
+            -11.15
+          ],
+          "eulerAngles": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            0.5,
+            0.5,
+            0.5
+          ]
+        },
+        {
+          "id": "wall_candle_FrontLeft",
+          "model": "wall_candles",
+          "texture": [
+            "dungeon_palette"
+          ],
+          "translate": [
+            -4.40,
             2.15,
-            -3.2
+            -7.2
           ],
           "eulerAngles": [
             0.0,
@@ -1059,15 +1169,59 @@
           ]
         },
         {
-          "id": "wall_candle_right",
+          "id": "wall_candle_FrontRight",
           "model": "wall_candles",
           "texture": [
             "dungeon_palette"
           ],
           "translate": [
-            4.42,
+            4.40,
             2.15,
-            -3.2
+            -7.2
+          ],
+          "eulerAngles": [
+            0.0,
+            -90.0,
+            0.0
+          ],
+          "scale": [
+            0.5,
+            0.5,
+            0.5
+          ]
+        },
+        {
+          "id": "wall_candle_RearLeft",
+          "model": "wall_candles",
+          "texture": [
+            "dungeon_palette"
+          ],
+          "translate": [
+            -4.40,
+            2.15,
+            1.8
+          ],
+          "eulerAngles": [
+            0.0,
+            90.0,
+            0.0
+          ],
+          "scale": [
+            0.5,
+            0.5,
+            0.5
+          ]
+        },
+        {
+          "id": "wall_candle_RearRight",
+          "model": "wall_candles",
+          "texture": [
+            "dungeon_palette"
+          ],
+          "translate": [
+            4.40,
+            2.15,
+            1.8
           ],
           "eulerAngles": [
             0.0,
@@ -1088,7 +1242,7 @@
           ],
           "translate": [
             0.0,
-            3.85,
+            3.65,
             -2.7
           ],
           "eulerAngles": [

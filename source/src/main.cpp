@@ -16,9 +16,14 @@ struct UniformBufferObject {
 };
 
 struct GlobalUniformBufferObject {
-	alignas(16) glm::vec3 lightDir;
-	alignas(16) glm::vec4 lightColor;
-	alignas(16) glm::vec3 eyePos;
+	alignas(16) glm::vec4 eyePos;
+	alignas(16) glm::vec4 ambientColor;
+	alignas(16) glm::vec4 directionalLightDir;
+	alignas(16) glm::vec4 directionalLightColor;
+	alignas(16) glm::vec4 pointLightPositions[6];
+	alignas(16) glm::vec4 pointLightColors[6];
+	alignas(16) glm::vec4 materialParams;
+	alignas(16) glm::ivec4 lightCounts;
 };
 
 struct Vertex {
@@ -68,6 +73,9 @@ class DungeonTavernNPCApp : public BaseProject {
 	const float moveSpeed = 3.0f;
 	const float verticalSpeed = 1.5f;
 	const float rotateSpeed = 2.0f;
+	const int cameraRoomLimitFlag = 1; // 1 = stay inside the room, 0 = free debug camera.
+	const glm::vec3 cameraRoomMin = glm::vec3(-4.55f, 0.35f, -11.25f);
+	const glm::vec3 cameraRoomMax = glm::vec3(4.55f, 4.25f, 4.75f);
 	
 	// Here you set the main application parameters
 	void setWindowParameters() {
@@ -132,8 +140,8 @@ class DungeonTavernNPCApp : public BaseProject {
 		// The last array, is a vector of pointer to the layouts of the sets that will
 		// be used in this pipeline. The first element will be set 0, and so on..
 		
-		P.init(this, &VD, "shaders/toChangeSimplePos.vert.spv",
-						  "shaders/toChangeBlinnFromPos.frag.spv",
+		P.init(this, &VD, "shaders/tavern_lit.vert.spv",
+						  "shaders/tavern_lit.frag.spv",
 						  {&DSLglobal, &DSLlocal});
 
 
@@ -252,19 +260,31 @@ class DungeonTavernNPCApp : public BaseProject {
 		// moves the view
 		float deltaT = GameLogic();
 		
-		// defines the global parameters for the uniform
-		static float lightRotationAngle = 0.0f; // Static variable to keep track of rotation
-		lightRotationAngle += -0.5f * deltaT; // Increment rotation angle based on time
-
-		const glm::mat4 lightView = glm::rotate(glm::mat4(1), glm::radians(lightRotationAngle), glm::vec3(0.0f, 1.0f, 0.0f)) * 
-									glm::rotate(glm::mat4(1), glm::radians(-45.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-		const glm::vec3 lightDir =  glm::vec3(lightView * glm::vec4(0.0f, 0.0f, -1.0f, 0.0f));
-
+		// Global lighting parameters for the tavern shader.
 		GlobalUniformBufferObject gubo{};
 
-		gubo.lightDir = lightDir;
-		gubo.lightColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f)*5.0f;
-		gubo.eyePos = glm::vec3(glm::inverse(View)[3]);
+		gubo.eyePos = glm::vec4(cameraPos, 1.0f);
+		gubo.ambientColor = glm::vec4(0.055f, 0.045f, 0.035f, 1.0f);
+		gubo.directionalLightDir = glm::vec4(glm::normalize(glm::vec3(-0.25f, -1.0f, -0.35f)), 0.0f);
+		gubo.directionalLightColor = glm::vec4(0.08f, 0.09f, 0.12f, 1.0f);
+
+		gubo.pointLightPositions[0] = glm::vec4(0.0f, 3.35f, -11.15f, 1.0f);  // back wall candle
+		gubo.pointLightPositions[1] = glm::vec4(-4.40f, 2.15f, -7.20f, 1.0f); // left rear wall candle
+		gubo.pointLightPositions[2] = glm::vec4(4.40f, 2.15f, -7.20f, 1.0f);  // right rear wall candle
+		gubo.pointLightPositions[3] = glm::vec4(-4.40f, 2.15f, 1.80f, 1.0f);  // left front wall candle
+		gubo.pointLightPositions[4] = glm::vec4(4.40f, 2.15f, 1.80f, 1.0f);   // right front wall candle
+		gubo.pointLightPositions[5] = glm::vec4(0.0f, 3.85f, -2.70f, 1.0f);   // ceiling chandelier
+
+		const glm::vec4 candleColor = glm::vec4(1.0f, 0.56f, 0.24f, 1.0f);
+		gubo.pointLightColors[0] = candleColor * 1.20f;
+		gubo.pointLightColors[1] = candleColor * 0.95f;
+		gubo.pointLightColors[2] = candleColor * 0.95f;
+		gubo.pointLightColors[3] = candleColor * 0.85f;
+		gubo.pointLightColors[4] = candleColor * 0.85f;
+		gubo.pointLightColors[5] = glm::vec4(1.0f, 0.66f, 0.34f, 1.0f) * 1.45f;
+
+		gubo.materialParams = glm::vec4(0.08f, 28.0f, 1.0f, 0.0f);
+		gubo.lightCounts = glm::ivec4(6, 0, 0, 0);
 
 		DSglobal.map(currentImage, &gubo, 0);
 
@@ -364,7 +384,10 @@ class DungeonTavernNPCApp : public BaseProject {
 		cameraPos -= moveForward * m.z * moveSpeed * deltaT;
 		cameraPos += right * m.x * moveSpeed * deltaT;
 		cameraPos.y += m.y * verticalSpeed * deltaT;
-		cameraPos.y = glm::clamp(cameraPos.y, -0.5f, 5.4f);
+
+		if(cameraRoomLimitFlag == 1) {
+			cameraPos = glm::clamp(cameraPos, cameraRoomMin, cameraRoomMax);
+		}
 
 		// Build view matrix
 		View = glm::lookAt(

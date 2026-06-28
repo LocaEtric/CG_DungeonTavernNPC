@@ -18,5 +18,5 @@ void main() {
 	gl_Position = ubo.mvpMat * vec4(inPosition, 1.0);
 	fragPos = (ubo.mMat * vec4(inPosition, 1.0)).xyz;
 	fragNormal = normalize(mat3(transpose(inverse(ubo.mMat))) * inNormal);
-	fragUV  = inUV;
+	fragUV = inUV;
 }
