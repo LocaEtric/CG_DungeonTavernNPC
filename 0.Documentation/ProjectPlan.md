@@ -2,98 +2,156 @@
 
 ## Project Goal
 
-Build a small but complete real-time 3D tavern scene in Vulkan. The user navigates in first person, approaches an NPC, and presses a key to trigger a simple interaction.
+Build a small but complete real-time 3D dungeon tavern scene in Vulkan. The user navigates in first person, approaches NPC characters, and presses keys to trigger simple interactions.
 
-The project should demonstrate the core Computer Graphics course requirements: mesh loading, textures, camera transforms, shaders, lighting, Vulkan pipeline setup, uniform updates, command buffer draw calls, and interactive application logic.
+The project demonstrates the core Computer Graphics course requirements: mesh loading, textures, camera transforms, custom shaders, lighting, Vulkan pipeline setup, uniform updates, command buffer draw calls, and interactive application logic.
 
-## Final Feature Target
+## Final Implemented Feature Set
 
-1. A 3D tavern or dungeon tavern environment.
-2. First-person navigation with keyboard movement and mouse or keyboard rotation.
-3. At least one NPC, such as an innkeeper behind the counter.
-4. Distance-based interaction detection between the player camera and the NPC.
-5. On-screen prompt when near the NPC: `Press E to interact`.
-6. Simple dialogue or state change after pressing `E`, for example: `Welcome to my tavern!`.
-7. Textured models and basic lighting.
-8. Custom vertex and fragment shaders that the team can explain.
-9. Clean code and documentation suitable for exam review.
+- A closed dungeon tavern environment with floor, walls, ceiling, front door, bar counter, tables, chairs, barrels, cupboards, lights, and dungeon-themed decoration.
+- Final prop pass with drink items on the bar, potion and globe on the right table, a cage and torture chair in the right storage area, a crow on the door greeter, a bat under the chandelier, a hanging skeleton, and two pumpkins.
+- First-person navigation using keyboard movement and keyboard view rotation.
+- Camera height control with `R` / `F`.
+- Optional room boundary logic, currently enabled, so the presentation camera stays inside the tavern.
+- Two NPC interaction points:
+  - `npc_door_greeter`
+  - `npc_bartender`
+- Distance-based interaction detection using horizontal XZ distance from the camera to each NPC.
+- On-screen interaction text using `TextMaker`.
+- Edge-triggered `E` interaction input, so holding the key does not trigger repeated actions.
+- Greeter registration and checkout flow.
+- Bartender order flow with drink choices using number keys `1`, `2`, and `3`.
+- Textured models loaded from `source/assets/scenes/scene.json`.
+- Custom vertex and fragment shaders:
+  - `source/shaders/tavern_lit.vert`
+  - `source/shaders/tavern_lit.frag`
+- Vertex format with position, normal, and UV.
+- Global uniform buffer for camera position, ambient light, directional light, point lights, material parameters, and light count.
+- Local uniform buffer for per-instance model and MVP matrices.
+- Blinn-Phong style lighting with ambient, diffuse, specular, point light attenuation, tone mapping, and gamma correction.
 
-## Development Order
+## Current Project Structure
 
-### 1. Make The Skeleton Run
+- `source/src/main.cpp`
+  - Main application class.
+  - Descriptor layouts.
+  - Vertex format.
+  - Render pass and graphics pipeline setup.
+  - Scene loading.
+  - Command buffer population.
+  - Camera, lighting, and NPC interaction logic.
+- `source/shaders/tavern_lit.vert`
+  - Transforms vertices by MVP matrix.
+  - Computes world-space fragment position.
+  - Transforms normals with inverse-transpose model matrix.
+  - Passes UV coordinates to the fragment shader.
+- `source/shaders/tavern_lit.frag`
+  - Samples the albedo texture.
+  - Applies ambient light, directional light, and multiple point lights.
+  - Uses a simple Blinn-Phong specular term.
+- `source/assets/scenes/scene.json`
+  - Defines model assets, texture assets, and all scene instances.
+  - Stores tavern layout transforms in translation, Euler rotation, and scale form.
+- `source/assets/models`
+  - Contains selected course-provided `.MGCG` assets and a small number of project OBJ panels.
+- `source/assets/textures`
+  - Contains project textures used by the tavern shell and selected assets.
+- `0.Documentation/DevelopmentLog`
+  - Records each meaningful implementation step.
 
-- Create the missing `source/assets/scenes/scene.json`.
-- Load a minimal scene first, such as `Plane.gltf` with `toChange.jpg`.
-- Confirm the Vulkan window opens and renders a visible textured object.
+## Completed Milestones
 
-### 2. Rename The Project
+### 1. Skeleton Bootstrap
 
-- Rename the CMake project from the skeleton placeholder to `DungeonTavernNPC`.
-- Rename the main application class and window title.
-- Keep the change small and easy to review.
+- Created a working asset and scene loading path.
+- Added missing scene file.
+- Confirmed the project follows the provided Vulkan course skeleton.
+- Kept framework files and `source/include` unchanged.
 
-### 3. Improve The Vertex Format
+### 2. Project Rename
 
-- Replace the temporary `pos + UV` vertex format with a format that also includes normals.
-- Update the vertex shader to pass transformed normals.
-- Update the fragment shader to use normals for lighting instead of deriving normals from screen-space derivatives.
+- Renamed the CMake project to `DungeonTavernNPC`.
+- Renamed the main application class.
+- Updated the window title.
 
-### 4. Import Tavern Assets
+### 3. Vertex Format And Shader Foundation
 
-- Select a small set of assets from the provided course asset folder:
-  - tavern or dungeon room
-  - bar counter
-  - table
-  - chair
-  - barrel
-  - NPC or character model
-- Copy only the assets actually needed for the project.
-- Record asset choices in a development log entry.
+- Replaced the temporary position + UV vertex format with position + normal + UV.
+- Updated the vertex shader to pass world-space position, normal, and UV.
+- Updated the fragment shader to use normals for lighting.
 
-### 5. Compose The Scene
+### 4. Asset Selection And Scene Composition
 
-- Use `scene.json` instances to place models.
-- Use translation, rotation, and scale matrices for tavern layout.
-- Build a simple readable scene: room/floor, counter, tables, chairs, barrels, NPC.
+- Selected tavern and dungeon assets from the course-provided `.MGCG` asset set.
+- Pruned unused model assets.
+- Built a readable tavern layout with bar area, guest area, entrance area, storage area, candles, and chandelier.
+- Added two NPC placeholders as scene instances.
 
-### 6. Implement First-Person Camera
+### 5. First-Person Camera
 
-- Store camera position, yaw, and pitch in application state.
-- Use `W`, `A`, `S`, `D` for movement.
-- Use mouse movement or keyboard keys for view rotation.
-- Compute the view matrix with a look-in-direction or equivalent `lookAt` formulation.
+- Implemented camera position, yaw, and pitch state.
+- Implemented movement and rotation.
+- Added height movement.
+- Added room limits for presentation stability.
+- Built the view matrix using a look-in-direction formulation.
 
-### 7. Add NPC Interaction
+### 6. NPC Interaction
 
-- Store the NPC world position.
-- Each frame, compute the distance between the camera and the NPC.
-- Show interaction text only when the player is close enough.
-- Use key debounce for `E` so one press triggers one interaction change.
+- Implemented horizontal distance checks against fixed NPC world positions.
+- Added greeter registration and checkout.
+- Added bartender drink menu.
+- Added edge-triggered input for `E` and number keys.
+- Decoupled interaction text updates from the 1 Hz FPS update.
+- Cleared interaction text when the user moves away from NPCs.
 
-### 8. Finalize Lighting And Shaders
+### 7. Lighting And Shader Polish
 
-- Implement texture sampling, ambient lighting, diffuse lighting, and a simple specular term.
-- Keep the shader understandable and easy to explain.
-- Avoid unnecessary PBR complexity unless the base project is already stable.
+- Added global lighting uniform data.
+- Added warm point lights at wall candles and chandelier.
+- Added ambient and weak directional lighting.
+- Implemented Blinn-Phong diffuse and specular terms in the fragment shader.
+- Added simple attenuation for point lights.
+- Added tone mapping and gamma correction.
 
-### 9. Test And Prepare Presentation
+### 8. Feature Verification
 
-- Verify the application builds from a clean build directory.
-- Verify models, textures, camera movement, lighting, and NPC interaction.
-- Prepare a short demonstration path:
-  1. launch the app
-  2. navigate inside the tavern
-  3. show textured objects and lighting
-  4. approach the NPC
-  5. show the prompt
-  6. press `E`
-  7. show the dialogue
-  8. explain the relevant code sections
+- The main runtime features have been manually verified by the team:
+  - scene rendering
+  - model placement
+  - texture mapping
+  - first-person movement
+  - camera room limits
+  - NPC proximity prompts
+  - greeter registration and checkout
+  - bartender order menu
+  - interaction text cleanup
+  - shader lighting behavior
+
+## Final Presentation Path
+
+1. Launch the application.
+2. Show the closed dungeon tavern environment.
+3. Move around with the first-person camera.
+4. Point out textured assets, walls, furniture, candles, and chandelier.
+5. Approach the door greeter.
+6. Press `E` to register.
+7. Walk to the bartender.
+8. Press `E` to open the drink menu.
+9. Press `1`, `2`, or `3` to choose a drink.
+10. Walk away to show that interaction text disappears.
+11. Return to the greeter and press `E` to check out.
+12. Explain the code sections for scene loading, vertex format, descriptors, pipeline, command buffer, camera transform, lighting, and interaction logic.
+
+## Remaining Optional Polish
+
+- Visually inspect the final prop heights and rotations in CLion, then adjust individual transforms only if a model still floats or clips.
+- Prepare screenshots for the final report or slides.
+- Keep the current interaction system simple; do not add quests, inventory, combat, or animation unless required.
 
 ## Deliberately Out Of Scope
 
 - Quest system
-- Shop system
+- Shop or economy system
 - Combat
 - Inventory
 - Complex AI
@@ -102,5 +160,4 @@ The project should demonstrate the core Computer Graphics course requirements: m
 - Full physics engine
 - Full PBR renderer
 
-These features are not needed for the selected topic and would make the project harder to finish and explain.
-
+These features are not needed for the selected topic and would make the project harder to finish, verify, and explain during the exam.

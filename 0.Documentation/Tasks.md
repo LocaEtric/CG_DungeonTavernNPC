@@ -14,14 +14,14 @@
 
 **规则要求的重点 PDF 明确要求项目代码里能展示并解释这些部分：**
 
-- [ ] 自己写的 shaders。
+- [x] 自己写的 shaders。
 - [x] vertex format：位置、normal、UV，必要时 tangent。
-- [ ] uniform blocks / descriptor layouts。
-- [ ] graphics pipelines 和 render passes。
-- [ ] command buffer 中如何记录 draw calls。
-- [ ] shader 如何用光照模型决定最终像素颜色。
-- [ ] fragment shader 应该包含直接光照和间接光照近似，例如 ambient。
-- [ ] shader 参数应通过 uniform / push constants 控制，例如灯光位置、颜色、Phong/Blinn 指数、viewer position、材质参数等。
+- [x] uniform blocks / descriptor layouts。
+- [x] graphics pipelines 和 render passes。
+- [x] command buffer 中如何记录 draw calls。
+- [x] shader 如何用光照模型决定最终像素颜色。
+- [x] fragment shader 应该包含直接光照和间接光照近似，例如 ambient。
+- [x] shader 参数应通过 uniform / push constants 控制，例如灯光位置、颜色、Phong/Blinn 指数、viewer position、材质参数等。
 - [ ] 可以有多个 pipeline，每个 pipeline 有自己的 shader 和 vertex format / descriptor set layout。
 
 ## Dev Process:
@@ -60,12 +60,10 @@
     2. 交互文字刷新已从 FPS 的 1 秒刷新块中拆出来，改为每帧检查 message 是否变化。
     3. 远离 NPC 后 message 会清空，并调用 `TextMaker::removeText(3)` 移除旧文字，不会残留在左上角。
 
-
-
 **陈设：**
 
-- [ ] 加上torture素材，凸出“地牢”
-- [ ] 屋内其他陈设继续优化
+- [x] 加上torture素材，凸出“地牢”
+- [x] 屋内其他陈设继续优化
 
 **NPC交互：**
 
@@ -76,3 +74,5 @@
 **Shader+Pipeline：**
 
 - [ ] bala
+
+- [ ] 

@@ -79,7 +79,7 @@ class DungeonTavernNPCApp : public BaseProject {
 	const float greeterInteractionRadius = 2.0f;
 	const float bartenderInteractionRadius = 3.4f;
 
-	// NPC greater and bartender
+	// NPC greeter and bartender
 	glm::vec3 greeterPos = glm::vec3(3.0f, 1.05f, 2.9f);
 	glm::vec3 bartenderPos = glm::vec3(0.0f, 1.2f, -10.2f);
 
